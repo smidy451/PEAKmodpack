@@ -3,15 +3,11 @@ setlocal enabledelayedexpansion
 
 cd /d "%~dp0"
 
-:: Папка для логов
-set "LOGDIR=logs"
-if not exist "%LOGDIR%" mkdir "%LOGDIR%"
+:: Создаём папку для логов
+if not exist "logs" mkdir logs
+set "LOGFILE=logs\log.txt"
 
-:: Имя лог-файла с датой/временем
-set "LOGFILE=%LOGDIR%\log_%DATE:~-4,4%%DATE:~-10,2%%DATE:~-7,2%_%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%.txt"
-set "LOGFILE=%LOGFILE: =0%"
-
-:: Очищаем файл и пишем заголовок
+:: Пишем заголовок
 echo ============================================= > "%LOGFILE%"
 echo        PEAK Modpack Sync >> "%LOGFILE%"
 echo        Started at %DATE% %TIME% >> "%LOGFILE%"
@@ -28,7 +24,7 @@ if errorlevel 1 (
 :: Версия Git
 for /f "tokens=*" %%i in ('git --version') do echo Найден %%i >> "%LOGFILE%"
 
-:: Попытка git pull
+:: git pull
 echo Обновление репозитория... >> "%LOGFILE%"
 echo Обновление репозитория...
 git pull >> "%LOGFILE%" 2>&1
